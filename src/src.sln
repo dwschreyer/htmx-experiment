@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmxWebApplication", "HtmxWebApplication\HtmxWebApplication.csproj", "{CC8E1B48-552D-4D27-91CF-BAE4F0EF69F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\_build\_build.csproj", "{4DF1BBBB-556F-4CF9-913F-8DE01494AC57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmxWebApplication.UnitTests", "HtmxWebApplication.UnitTests\HtmxWebApplication.UnitTests.csproj", "{E91F460C-16DB-4B5B-A5B2-0AF439E69EBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC8E1B48-552D-4D27-91CF-BAE4F0EF69F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC8E1B48-552D-4D27-91CF-BAE4F0EF69F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC8E1B48-552D-4D27-91CF-BAE4F0EF69F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC8E1B48-552D-4D27-91CF-BAE4F0EF69F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DF1BBBB-556F-4CF9-913F-8DE01494AC57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF1BBBB-556F-4CF9-913F-8DE01494AC57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E91F460C-16DB-4B5B-A5B2-0AF439E69EBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E91F460C-16DB-4B5B-A5B2-0AF439E69EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E91F460C-16DB-4B5B-A5B2-0AF439E69EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E91F460C-16DB-4B5B-A5B2-0AF439E69EBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CAD63E9A-31FD-4467-9FAB-A8D9FBECF7E4}
+	EndGlobalSection
+EndGlobal

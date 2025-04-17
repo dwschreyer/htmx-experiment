@@ -1,0 +1,20 @@
+﻿@model HtmxWebApplication.Data.People
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in Model.Items)
+        {
+            <tr>
+                <td>@person.Id</td>
+                <td>@person.Name</td>
+                <td><button hx-get="/views/PartialView/People/@person.Id" hx-target="#people">Edit</button></td>
+            </tr>
+        }
+    </tbody>
+</table>

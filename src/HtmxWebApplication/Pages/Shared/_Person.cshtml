@@ -1,0 +1,7 @@
+﻿@model HtmxWebApplication.Data.Person
+
+<form id="edit-person-@Model.Id" hx-get="/views/PartialView/People/@Model.Id" hx-target="#people">
+    <input type="text" name="Name" value="@Model.Name" required />
+    <button type="submit">Save</button>
+    <button type="button" hx-get="/api/Basic/CancelEdit/@Model.Id" hx-target="#person-@Model.Id" hx-swap="outerHTML">Cancel</button>
+</form>
