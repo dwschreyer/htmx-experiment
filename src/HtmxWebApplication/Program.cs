@@ -27,3 +27,12 @@ app.MapRazorPages()
    .WithStaticAssets();
 
 app.Run();
+
+
+namespace HtmxWebApplication
+{
+    public partial class Program
+    {
+        
+    }
+}
