@@ -29,6 +29,7 @@
         "CleanTestResults",
         "GenerateCoverageReport",
         "OpenCoverageReport",
+        "PublishCoverageReport",
         "Restore",
         "TestSolution"
       ]
