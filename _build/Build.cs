@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -14,6 +15,7 @@ using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.ReportGenerator;
 using Nuke.Common.Utilities.Collections;
+using Serilog;
 using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.PathConstruction;
 
@@ -21,7 +23,7 @@ using static Nuke.Common.IO.PathConstruction;
     "deployment",
     GitHubActionsImage.UbuntuLatest,
     OnPushBranches = new[] { "main" },
-    InvokedTargets = new[] { nameof(OpenCoverageReport) }
+    InvokedTargets = new[] { nameof(PublishCoverageReport) }
 )]
 
 class Build : NukeBuild
@@ -89,11 +91,14 @@ class Build : NukeBuild
             ReportGeneratorTasks.ReportGenerator(_ => _
                 .SetReports(CoverageTestResultsPath / "*" / "coverage.cobertura.xml")
                 .SetTargetDirectory(CoverageReportPath)
-                .SetReportTypes(ReportTypes.Html));
+                .SetReportTypes([ReportTypes.MarkdownSummaryGithub,
+                    ReportTypes.HtmlInline,
+                    ReportTypes.Badges]));
         });
 
     Target OpenCoverageReport => _ => _
         .DependsOn(GenerateCoverageReport)
+        .OnlyWhenStatic(() => Host is not GitHubActions)
         .Executes(() =>
         {
             var reportFile = CoverageReportPath / "index.html";
@@ -104,5 +109,40 @@ class Build : NukeBuild
                 FileName = reportFile,
                 UseShellExecute = true
             });
+        });
+
+    Target PublishCoverageReport => _ => _
+        .DependsOn(GenerateCoverageReport)
+        .OnlyWhenStatic(() => Host is GitHubActions)
+        .Produces(CoverageReportPath / "*.html")
+        .Executes(() =>
+        {
+            // Path to the Markdown summary report
+            var markdownReportPath = CoverageReportPath / "SummaryGithub.md"; // Or "Summary.md"
+            Assert.FileExists(markdownReportPath, $"Markdown summary report not found at {markdownReportPath}");
+
+            // Path to the coverage badge
+            var badgePath = CoverageReportPath / "badge_combined.svg";
+            Assert.FileExists(badgePath, $"Coverage badge not found at {badgePath}");
+
+            // Read the Markdown report content
+            var markdownContent = File.ReadAllText(markdownReportPath);
+
+            // Append to $GITHUB_STEP_SUMMARY
+            var summaryFile = Environment.GetEnvironmentVariable("GITHUB_STEP_SUMMARY");
+            Assert.NotNull(summaryFile, "$GITHUB_STEP_SUMMARY environment variable is not set.");
+            File.AppendAllText(summaryFile, $"# Code Coverage Report\n\n{markdownContent}");
+            Log.Information("Appended Markdown summary to GitHub Actions summary.");
+
+            // Copy badge to a docs/coverage directory for committing
+            var badgeOutputPath = RootDirectory / "docs" / "badge_combined.svg";
+            badgeOutputPath.Parent.CreateDirectory();
+            File.Copy(badgePath, badgeOutputPath, overwrite: true);
+            Log.Information("Copied badge to {Path} for committing.", badgeOutputPath);
+
+            // Upload the coverage report as a GitHub Actions artifact
+            var artifactPath = CoverageReportPath;
+            Assert.DirectoryExists(artifactPath, $"Coverage report directory not found at {artifactPath}");
+            Log.Information($"Uploading coverage report from {artifactPath} as artifact...");
         });
 }

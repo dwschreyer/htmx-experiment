@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="../_build/_build.csproj">
+    <Build Project="false" />
+  </Project>
+  <Project Path="HtmxWebApplication.UnitTests/HtmxWebApplication.UnitTests.csproj" />
+  <Project Path="HtmxWebApplication/HtmxWebApplication.csproj" />
+</Solution>
